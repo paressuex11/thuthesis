@@ -1,5 +1,9 @@
 # vim: set ft=perl:
+$pdf_mode=5;
+$xelatex="xelatex -file-line-error -halt-on-error %O %S";
+$xelatex_silent_switch="-interaction=nonstopmode";
 $xdvipdfmx="xdvipdfmx -q -E -o %D %O %S";
+
 $clean_ext = 'thm bbl hd loe synctex.gz xdv';
 $makeindex = 'makeindex -s gind.ist %O -o %D %S';
 add_cus_dep('glo', 'gls', 0, 'makeglo2gls');

@@ -1,7 +1,5 @@
 # Makefile for ThuThesis
 
-# Set opts for latexmk if you use it
-LATEXMKOPTS = -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
 # Basename of thesis
 THESISMAIN = main
 # Basename of shuji
@@ -51,13 +49,13 @@ viewshuji: shuji
 shuji: $(SHUJIMAIN).pdf
 
 $(PACKAGE).pdf: $(CLSFILES) $(THESISMAIN).tex FORCE_MAKE
-	latexmk $(LATEXMKOPTS) $(PACKAGE).dtx
+	latexmk $(PACKAGE).dtx
 
 $(THESISMAIN).pdf: $(CLSFILES) $(BSTFILE) FORCE_MAKE
-	latexmk $(LATEXMKOPTS) $(THESISMAIN)
+	latexmk $(THESISMAIN)
 
 $(SHUJIMAIN).pdf: $(CLSFILES) FORCE_MAKE
-	latexmk $(LATEXMKOPTS) $(SHUJIMAIN)
+	latexmk $(SHUJIMAIN)
 
 clean:
 	latexmk -c $(PACKAGE).dtx $(THESISMAIN) $(SHUJIMAIN)
