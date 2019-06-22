@@ -2,8 +2,8 @@
 
 # Basename of thesis
 THESISMAIN = main
-# Basename of shuji
-SHUJIMAIN = shuji
+# Basename of spine
+SPINEMAIN = spine
 
 PACKAGE=thuthesis
 SOURCES=$(PACKAGE).ins $(PACKAGE).dtx
@@ -12,7 +12,7 @@ THESISCONTENTS=$(THESISMAIN).tex data/*.tex $(FIGURES)
 FIGURES=$(wildcard figures/*.pdf)
 BIBFILE=ref/*.bib
 BSTFILE=*.bst
-SHUJICONTENTS=$(SHUJIMAIN).tex
+SPINECONTENTS=$(SPINEMAIN).tex
 CLSFILES=dtx-style.sty $(PACKAGE).cls
 
 # make deletion work on Windows
@@ -24,9 +24,9 @@ else
 	OPEN = open
 endif
 
-.PHONY: all all-dev clean distclean dist thesis viewthesis shuji viewshuji doc viewdoc cls check FORCE_MAKE
+.PHONY: all all-dev clean distclean dist thesis viewthesis spine viewspine doc viewdoc cls check FORCE_MAKE
 
-all: thesis shuji
+all: thesis spine
 
 all-dev: doc all
 
@@ -45,10 +45,10 @@ viewthesis: thesis
 
 thesis: $(THESISMAIN).pdf
 
-viewshuji: shuji
-	$(OPEN) $(SHUJIMAIN).pdf
+viewspine: spine
+	$(OPEN) $(SPINEMAIN).pdf
 
-shuji: $(SHUJIMAIN).pdf
+spine: $(SPINEMAIN).pdf
 
 $(PACKAGE).pdf: $(CLSFILES) $(THESISMAIN).tex FORCE_MAKE
 	latexmk $(PACKAGE).dtx
@@ -56,15 +56,15 @@ $(PACKAGE).pdf: $(CLSFILES) $(THESISMAIN).tex FORCE_MAKE
 $(THESISMAIN).pdf: $(CLSFILES) $(BSTFILE) FORCE_MAKE
 	latexmk $(THESISMAIN)
 
-$(SHUJIMAIN).pdf: $(CLSFILES) FORCE_MAKE
-	latexmk $(SHUJIMAIN)
+$(SPINEMAIN).pdf: $(CLSFILES) FORCE_MAKE
+	latexmk $(SPINEMAIN)
 
 clean:
-	latexmk -c $(PACKAGE).dtx $(THESISMAIN) $(SHUJIMAIN)
+	latexmk -c $(PACKAGE).dtx $(THESISMAIN) $(SPINEMAIN)
 	-@$(RM) *~
 
 cleanall: clean
-	-@$(RM) $(PACKAGE).pdf $(THESISMAIN).pdf $(SHUJIMAIN).pdf
+	-@$(RM) $(PACKAGE).pdf $(THESISMAIN).pdf $(SPINEMAIN).pdf
 
 distclean: cleanall
 	-@$(RM) $(CLSFILES)

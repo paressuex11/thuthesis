@@ -26,9 +26,9 @@ const config = {
 
     example: {
         files: ['main.tex',
-                'shuji.tex',
+                'spine.tex',
                 'main.pdf',
-                'shuji.pdf',
+                'spine.pdf',
                 'thuthesis.sty',
                 'data/*.tex',
                 'figures/*.*',
