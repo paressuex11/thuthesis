@@ -1,27 +1,19 @@
 # Makefile for ThuThesis
 
-# Basename of thesis
-THESISMAIN = main
-# Basename of spine
-SPINEMAIN = spine
+PACKAGE = thuthesis
+THESIS  = main
+SPINE   = spine
 
-PACKAGE=thuthesis
-SOURCES=$(PACKAGE).ins $(PACKAGE).dtx
-THESISCONTENTS=$(THESISMAIN).tex data/*.tex $(FIGURES)
-# NOTE: update this to reflect your local file types.
-FIGURES=$(wildcard figures/*.pdf)
-BIBFILE=ref/*.bib
-BSTFILE=*.bst
-SPINECONTENTS=$(SPINEMAIN).tex
-CLSFILES=dtx-style.sty $(PACKAGE).cls
+SOURCES = $(PACKAGE).ins $(PACKAGE).dtx
+CLSFILE = dtx-style.sty $(PACKAGE).cls
+
+LATEXMK = latexmk
 
 # make deletion work on Windows
 ifdef SystemRoot
-	RM = del /Q
-	OPEN = start
+RM = del /Q
 else
-	RM = rm -f
-	OPEN = open
+RM = rm -f
 endif
 
 .PHONY: all all-dev clean distclean dist thesis viewthesis spine viewspine doc viewdoc cls check FORCE_MAKE
@@ -30,44 +22,44 @@ all: thesis spine
 
 all-dev: doc all
 
-cls: $(CLSFILES)
+cls: $(CLSFILE)
 
-$(CLSFILES): $(SOURCES)
+$(CLSFILE): $(SOURCES)
 	xetex $(PACKAGE).ins
-
-viewdoc: doc
-	$(OPEN) $(PACKAGE).pdf
 
 doc: $(PACKAGE).pdf
 
-viewthesis: thesis
-	$(OPEN) $(THESISMAIN).pdf
+thesis: $(THESIS).pdf
 
-thesis: $(THESISMAIN).pdf
+spine: $(SPINE).pdf
+
+$(PACKAGE).pdf: cls FORCE_MAKE
+	$(LATEXMK) $(PACKAGE).dtx
+
+$(THESIS).pdf: cls FORCE_MAKE
+	$(LATEXMK) $(THESIS)
+
+$(SPINE).pdf: cls FORCE_MAKE
+	$(LATEXMK) $(SPINE)
+
+viewdoc: doc
+	$(LATEXMK) -pv $(PACKAGE).dtx
+
+viewthesis: thesis
+	$(LATEXMK) -pv $(THESIS)
 
 viewspine: spine
-	$(OPEN) $(SPINEMAIN).pdf
-
-spine: $(SPINEMAIN).pdf
-
-$(PACKAGE).pdf: $(CLSFILES) $(THESISMAIN).tex FORCE_MAKE
-	latexmk $(PACKAGE).dtx
-
-$(THESISMAIN).pdf: $(CLSFILES) $(BSTFILE) FORCE_MAKE
-	latexmk $(THESISMAIN)
-
-$(SPINEMAIN).pdf: $(CLSFILES) FORCE_MAKE
-	latexmk $(SPINEMAIN)
+	$(LATEXMK) -pv $(SPINE)
 
 clean:
-	latexmk -c $(PACKAGE).dtx $(THESISMAIN) $(SPINEMAIN)
+	$(LATEXMK) -c $(PACKAGE).dtx $(THESIS) $(SPINE)
 	-@$(RM) *~
 
 cleanall: clean
-	-@$(RM) $(PACKAGE).pdf $(THESISMAIN).pdf $(SPINEMAIN).pdf
+	-@$(RM) $(PACKAGE).pdf $(THESIS).pdf $(SPINE).pdf
 
 distclean: cleanall
-	-@$(RM) $(CLSFILES)
+	-@$(RM) $(CLSFILE)
 	-@$(RM) -r dist
 
 check: FORCE_MAKE
