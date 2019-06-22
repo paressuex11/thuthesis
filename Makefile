@@ -24,9 +24,11 @@ else
 	OPEN = open
 endif
 
-.PHONY: all clean distclean dist thesis viewthesis shuji viewshuji doc viewdoc cls check FORCE_MAKE
+.PHONY: all all-dev clean distclean dist thesis viewthesis shuji viewshuji doc viewdoc cls check FORCE_MAKE
 
-all: doc thesis shuji
+all: thesis shuji
+
+all-dev: doc all
 
 cls: $(CLSFILES)
 
@@ -76,5 +78,5 @@ else
 	@[[ $(shell grep -E -c '"version": "$(version)"' package.json) -eq 1 ]] || (echo "update version in package.json before release"; exit 1)
 endif
 
-dist: check all
+dist: check all-dev
 	npm run build -- --version=$(version)
