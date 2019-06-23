@@ -67,7 +67,7 @@ function bootstrap(callback) {
 function cleanup(callback) {
     del.sync([path.join(config.dist.root, config.dist.build)]);
 
-    log(color.green.bold(`🍺  ${config.dist.zip} generated`));
+    log(color.green.bold(`🍺 ${config.dist.zip} generated`));
 
     callback();
 }
